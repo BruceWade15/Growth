@@ -1,1 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Growth Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            color: #000000;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+
+        .question-container {
+            background: #fafafa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #000000;
+        }
+
+        .rating-scale {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .rating-option {
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+
+        .rating-option label {
+            display: block;
+            padding: 12px 8px;
+            background: #e5e5e5;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .rating-option input[type="radio"]:checked + label {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .rating-option label:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .submit-btn {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1e40af;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            display: none;
+            text-align: center;
+        }
+
+        .score-display {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-category {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 2px solid #1e3a8a;
+        }
+
+        .category-title {
+            color: #1e3a8a;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .category-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .recommendations {
+            text-align: left;
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .recommendations h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .recommendations ul {
+            margin-left: 20px;
+        }
+
+        .recommendations li {
+            margin-bottom: 8px;
+        }
+
+        .action-btn {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #1e40af;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .rating-scale {
+                flex-direction: column;
+            }
+
+            .rating-option {
+                min-width: auto;
+            }
+
+            .score-number {
+                font-size: 36px;
+            }
+
+            .category-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://brucewade.co.za/wp-content/uploads/2025/07/bat-3.png" alt="Company Logo" class="logo">
+            <h1>Business Growth Assessment</h1>
+            <p>Based on Greiner's Growth Model methodology, this assessment will categorize your business into one of the crisis points of growth and provide recommended actions to mitigate the crisis.</p>
+        </div>
+
+        <div class="content">
+            <form id="assessmentForm">
+                <!-- User Information -->
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                    <div class="error-message" id="nameError">Please enter your full name.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company Name *</label>
+                    <input type="text" id="company" name="company" required>
+                    <div class="error-message" id="companyError">Please enter your company name.</div>
+                </div>
+
+                <!-- Assessment Questions -->
+                <div class="question-container">
+                    <div class="question-text">1. How would you describe your organization's management structure and decision-making process?</div>
+                    <div class="rating-scale">
+                        <div class="rating-option">
+                            <input type="radio" id="q1_1" name="q1" value="1" required>
+                            <label for="q1_1">Highly centralized, founder makes all decisions</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q1_2" name="q1" value="2">
+                            <label for="q1_2">Mostly centralized with some delegation</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q1_3" name="q1" value="3">
+                            <label for="q1_3">Mixed centralized and decentralized</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q1_4" name="q1" value="4">
+                            <label for="q1_4">Mostly decentralized with clear systems</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q1_5" name="q1" value="5">
+                            <label for="q1_5">Fully decentralized with collaborative management</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <div class="question-text">2. How effectively does your organization coordinate activities between different departments or divisions?</div>
+                    <div class="rating-scale">
+                        <div class="rating-option">
+                            <input type="radio" id="q2_1" name="q2" value="1" required>
+                            <label for="q2_1">Poor coordination, departments work in isolation</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q2_2" name="q2" value="2">
+                            <label for="q2_2">Limited coordination, some communication issues</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q2_3" name="q2" value="3">
+                            <label for="q2_3">Moderate coordination with established processes</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q2_4" name="q2" value="4">
+                            <label for="q2_4">Good coordination with clear systems</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q2_5" name="q2" value="5">
+                            <label for="q2_5">Excellent coordination and collaboration</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <div class="question-text">3. How would you rate your organization's ability to control and monitor performance across different areas?</div>
+                    <div class="rating-scale">
+                        <div class="rating-option">
+                            <input type="radio" id="q3_1" name="q3" value="1" required>
+                            <label for="q3_1">Minimal control, limited monitoring systems</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q3_2" name="q3" value="2">
+                            <label for="q3_2">Basic control systems, inconsistent monitoring</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q3_3" name="q3" value="3">
+                            <label for="q3_3">Moderate control with regular reporting</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q3_4" name="q3" value="4">
+                            <label for="q3_4">Good control systems with effective monitoring</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q3_5" name="q3" value="5">
+                            <label for="q3_5">Excellent control and comprehensive monitoring</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <div class="question-text">4. How bureaucratic or flexible are your organizational processes and procedures?</div>
+                    <div class="rating-scale">
+                        <div class="rating-option">
+                            <input type="radio" id="q4_1" name="q4" value="1" required>
+                            <label for="q4_1">Highly bureaucratic, rigid procedures</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q4_2" name="q4" value="2">
+                            <label for="q4_2">Mostly bureaucratic with some flexibility</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q4_3" name="q4" value="3">
+                            <label for="q4_3">Balanced bureaucracy and flexibility</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q4_4" name="q4" value="4">
+                            <label for="q4_4">Mostly flexible with necessary procedures</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q4_5" name="q4" value="5">
+                            <label for="q4_5">Highly flexible, adaptive processes</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <div class="question-text">5. How well does your organization encourage innovation and creative problem-solving among employees?</div>
+                    <div class="rating-scale">
+                        <div class="rating-option">
+                            <input type="radio" id="q5_1" name="q5" value="1" required>
+                            <label for="q5_1">Innovation discouraged, status quo preferred</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q5_2" name="q5" value="2">
+                            <label for="q5_2">Limited innovation, cautious approach</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q5_3" name="q5" value="3">
+                            <label for="q5_3">Moderate innovation with some support</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q5_4" name="q5" value="4">
+                            <label for="q5_4">Good innovation culture with active support</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q5_5" name="q5" value="5">
+                            <label for="q5_5">Excellent innovation culture, creativity highly valued</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <div class="question-text">6. How would you describe employee motivation and engagement levels in your organization?</div>
+                    <div class="rating-scale">
+                        <div class="rating-option">
+                            <input type="radio" id="q6_1" name="q6" value="1" required>
+                            <label for="q6_1">Low motivation, disengaged workforce</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q6_2" name="q6" value="2">
+                            <label for="q6_2">Below average motivation with some issues</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q6_3" name="q6" value="3">
+                            <label for="q6_3">Average motivation, mixed engagement</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q6_4" name="q6" value="4">
+                            <label for="q6_4">Good motivation with engaged employees</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q6_5" name="q6" value="5">
+                            <label for="q6_5">High motivation, highly engaged workforce</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <div class="question-text">7. How effectively does your organization adapt to market changes and customer needs?</div>
+                    <div class="rating-scale">
+                        <div class="rating-option">
+                            <input type="radio" id="q7_1" name="q7" value="1" required>
+                            <label for="q7_1">Slow to adapt, resistant to change</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q7_2" name="q7" value="2">
+                            <label for="q7_2">Limited adaptation, reactive approach</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q7_3" name="q7" value="3">
+                            <label for="q7_3">Moderate adaptation with some proactive elements</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q7_4" name="q7" value="4">
+                            <label for="q7_4">Good adaptation, mostly proactive</label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" id="q7_5" name="q7" value="5">
+                            <label for="q7_5">Excellent adaptation, highly responsive and agile</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Get Your Assessment Results</button>
+            </form>
+
+            <div id="results" class="results-container">
+                <div class="score-display">
+                    <div class="score-number" id="totalScore">0</div>
+                    <div>Total Score</div>
+                </div>
+
+                <div id="participantInfo">
+                    <h3 id="participantName"></h3>
+                    <p id="participantCompany"></p>
+                </div>
+
+                <div class="result-category" id="resultCategory">
+                    <div class="category-title" id="categoryTitle"></div>
+                    <div class="category-description" id="categoryDescription"></div>
+                    <div class="recommendations" id="recommendations"></div>
+                </div>
+
+                <a href="https://outlook.office365.com/book/BookwithBruce@em-solutions.co.za/" class="action-btn" target="_blank">Book a Consultation with Bruce</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const assessmentForm = document.getElementById('assessmentForm');
+        const resultsDiv = document.getElementById('results');
+
+        const crisisCategories = {
+            leadership: {
+                title: "Crisis of Leadership",
+                range: [7, 14],
+                description: "Your organization is experiencing a Crisis of Leadership. This typically occurs in small, entrepreneurial companies where informal communication and hard work have driven initial success, but growth has created a need for more professional management and organizational structure.",
+                recommendations: [
+                    "Implement formal management systems and organizational structure",
+                    "Establish clear roles, responsibilities, and reporting relationships",
+                    "Develop leadership capabilities within the organization",
+                    "Create formal communication channels and decision-making processes",
+                    "Consider hiring experienced managers or developing current staff"
+                ]
+            },
+            autonomy: {
+                title: "Crisis of Autonomy",
+                range: [15, 21],
+                description: "Your organization is facing a Crisis of Autonomy. Lower-level managers are seeking more independence and decision-making authority, but top management is reluctant to delegate. This creates tension and limits the organization's ability to respond quickly to opportunities.",
+                recommendations: [
+                    "Delegate authority and empower middle management",
+                    "Implement decentralized decision-making processes",
+                    "Establish clear accountability measures and performance metrics",
+                    "Create profit centers or business units with autonomous leadership",
+                    "Develop trust between top management and lower-level managers"
+                ]
+            },
+            control: {
+                title: "Crisis of Control",
+                range: [22, 28],
+                description: "Your organization is experiencing a Crisis of Control. Decentralized operations have led to a loss of coordination and control. Top management feels they're losing grip on diverse operations, while field managers resist interference from headquarters.",
+                recommendations: [
+                    "Implement formal control systems and reporting mechanisms",
+                    "Establish coordination mechanisms between divisions",
+                    "Create centralized support functions (HR, finance, IT)",
+                    "Develop standardized policies and procedures",
+                    "Implement regular review and monitoring processes"
+                ]
+            },
+            redTape: {
+                title: "Crisis of Red Tape",
+                range: [29, 32],
+                description: "Your organization is facing a Crisis of Red Tape. Bureaucratic systems have become too complex and rigid, stifling innovation and responsiveness. Employees feel constrained by excessive procedures and lack of flexibility.",
+                recommendations: [
+                    "Simplify bureaucratic procedures and eliminate unnecessary red tape",
+                    "Encourage innovation and creative problem-solving",
+                    "Implement more flexible organizational structures",
+                    "Foster collaboration between different departments and levels",
+                    "Balance control needs with operational flexibility"
+                ]
+            },
+            growth: {
+                title: "Crisis of Growth",
+                range: [33, 35],
+                description: "Your organization is experiencing a Crisis of Growth. You've successfully managed previous crises but now face new challenges related to market saturation, external partnerships, or the need for renewal and innovation to sustain growth.",
+                recommendations: [
+                    "Focus on external partnerships and strategic alliances",
+                    "Invest in innovation and new product/service development",
+                    "Explore new markets and customer segments",
+                    "Consider organizational renewal and cultural transformation",
+                    "Develop capabilities for continuous adaptation and learning"
+                ]
+            }
+        };
+
+        assessmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateForm()) {
+                calculateResults();
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+            
+            // Validate required fields
+            const requiredFields = ['name', 'email', 'company'];
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                const errorDiv = document.getElementById(field + 'Error');
+                
+                if (!input.value.trim()) {
+                    errorDiv.style.display = 'block';
+                    isValid = false;
+                } else {
+                    errorDiv.style.display = 'none';
+                }
+            });
+            
+            // Validate email format
+            const emailInput = document.getElementById('email');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailInput.value && !emailPattern.test(emailInput.value)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validate all questions are answered
+            for (let i = 1; i <= 7; i++) {
+                const questionName = 'q' + i;
+                const radioButtons = document.getElementsByName(questionName);
+                let answered = false;
+                
+                for (let radio of radioButtons) {
+                    if (radio.checked) {
+                        answered = true;
+                        break;
+                    }
+                }
+                
+                if (!answered) {
+                    alert('Please answer all questions before submitting.');
+                    isValid = false;
+                    break;
+                }
+            }
+            
+            return isValid;
+        }
+
+        function calculateResults() {
+            // Calculate total score
+            let totalScore = 0;
+            for (let i = 1; i <= 7; i++) {
+                const questionName = 'q' + i;
+                const checkedRadio = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (checkedRadio) {
+                    totalScore += parseInt(checkedRadio.value);
+                }
+            }
+            
+            // Determine crisis category
+            let category = null;
+            for (let key in crisisCategories) {
+                const crisis = crisisCategories[key];
+                if (totalScore >= crisis.range[0] && totalScore <= crisis.range[1]) {
+                    category = crisis;
+                    break;
+                }
+            }
+            
+            // Display results
+            displayResults(totalScore, category);
+        }
+
+        function displayResults(score, category) {
+            // Hide form and show results
+            assessmentForm.style.display = 'none';
+            resultsDiv.style.display = 'block';
+            
+            // Display score
+            document.getElementById('totalScore').textContent = score;
+            
+            // Display participant info
+            const name = document.getElementById('name').value;
+            const company = document.getElementById('company').value;
+            document.getElementById('participantName').textContent = name;
+            document.getElementById('participantCompany').textContent = company;
+            
+            // Display category results
+            if (category) {
+                document.getElementById('categoryTitle').textContent = category.title;
+                document.getElementById('categoryDescription').textContent = category.description;
+                
+                // Display recommendations
+                let recommendationsHTML = '<h4>Recommended Actions:</h4><ul>';
+                category.recommendations.forEach(rec => {
+                    recommendationsHTML += `<li>${rec}</li>`;
+                });
+                recommendationsHTML += '</ul>';
+                document.getElementById('recommendations').innerHTML = recommendationsHTML;
+            }
+            
+            // Scroll to top of results
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
